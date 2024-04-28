@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ title }}</title>
+  </head>
+  <body>
+    <table cols="4">
+          <thead align="left">
+            <th width="200px"> ID </th> 
+            <th width="200px"> Логин </th>
+            <th width="200px"> Статус </th>
+          </thead>
+          {% for inf in all_inf %}
+            <tr> 
+              <td width="200px"> {{ inf.id }} </td> 
+              <td width="200px"> {{ inf.username }} </td> 
+              <td width="200px">
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ inf.status }}
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{ url_for('admin.changed_status', id=inf.id, status='admin') }}">admin</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('admin.changed_status', id=inf.id, status='user') }}">user</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('admin.changed_status', id=inf.id, status='moderator') }}">moderator</a></li>
+                  </ul>
+                </div>
+              </td>
+              <td width="200px"> <a href="{{ url_for('admin.delete_user', id=inf.id)}}"><img width="20px" height="20px" src="/static/del.png"></a></td>
+            </tr>
+          {% endfor %}
+    </table>
+  </body>
+</html>
+{% endblock %}

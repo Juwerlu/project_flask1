@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-2"></div>
+    <div class='col-8'>
+        {{ news.text|safe }}
+    </div>
+</div>
+{% if current_user.is_authenticated %}
+<div class="row">
+    <div class="col-2"></div>
+    <div class='col-4'>
+        {% include 'messages.html' %}
+        <form action="{{ url_for('news.add_comment') }}" method="post">
+            {{ form.hidden_tag() }}
+            <div class="form-group" style="margin-bottom: 10px">
+                {{ form.comment.label }}<br>
+                {{ form.comment() }}
+            </div>
+            {{ form.submit }}
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="row">
+    <div class="col-2"></div>
+    <div class='col-4'>
+        <p><a href="{{ url_for('user.login', next=request.full_path) }}">Авторизуйтесь</a>, чтобы прокомментировать</p>
+    </div>
+</div>
+{% endif %}
+{% if news.comments %}
+<div class="row">
+    <div class="col-2"></div>
+    <div class='col-4'>
+        <h3>Комментарии:</h3>
+        {% for comment in news.comments %}
+        <div class="card">
+            <div class="card-body">
+            {{ comment.user.username }} написал(a): <br>
+            {{ comment.text }} <br>
+            {% if current_user.status == 'admin' or current_user.status == 'moderator' or current_user.id == comment.user.id %}
+                <a href="{{ url_for('news.delete_comment', id=comment.id) }}">Удалить</a>
+            {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+</div>
+{% endblock %}
