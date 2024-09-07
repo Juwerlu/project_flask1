@@ -1,7 +1,9 @@
+from datetime import datetime
+
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime
-from webapp.news.models import db, News
+
+from webapp.news.models import News, db
 
 
 def get_html(url):
@@ -18,7 +20,10 @@ def get_news_ks():
     html = get_html('https://fksr.org/index.php?page=news&tg=2')
     if html:
         soup = BeautifulSoup(html, 'html.parser')
-        all_news = soup.find('ul', class_='news noimg4 bg').find_all('li', class_='tp1')
+        all_news = soup.find(
+            'ul',
+            class_='news noimg4 bg'
+        ).find_all('li', class_='tp1')
         for news in all_news:
             title = news.find('a', class_='title').text
             url = 'https://fksr.org' + news.find('a', class_='title')['href']
@@ -27,11 +32,13 @@ def get_news_ks():
             html_1 = get_html(url)
             if html_1:
                 soup_1 = BeautifulSoup(html_1, 'html.parser')
-                text = soup_1.find('div', class_='mainblock clearfix').decode_contents()
+                text = soup_1.find(
+                    'div',
+                    class_='mainblock clearfix'
+                ).decode_contents()
                 path = soup_1.find('div', class_='location').decode_contents()
                 text = text.replace(path, '')
             save_news(title, url, date, text)
-
 
 
 def save_news(title, url, date, text):
@@ -45,7 +52,6 @@ def save_news(title, url, date, text):
         )
         db.session.add(new_news)
         db.session.commit()
-
 
 
 if __name__ == '__main__':

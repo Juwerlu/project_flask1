@@ -1,7 +1,8 @@
-from webapp.user.models import User
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, EqualTo, Email, ValidationError
+from wtforms import BooleanField, PasswordField, StringField, SubmitField
+from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
+
+from webapp.user.models import User
 
 
 class LoginForm(FlaskForm):
@@ -44,19 +45,21 @@ class RegForm(FlaskForm):
         )
     password_2 = PasswordField(
         'Подтвердите пароль: ',
-        validators=[DataRequired(), EqualTo('password', 'Пароли не совпадают!')],
+        validators=[DataRequired(),
+                    EqualTo('password', 'Пароли не совпадают!')],
         render_kw={'class': 'form-control'},
         )
     submit = SubmitField(
         'Зарегестрироваться',
         render_kw={'class': 'btn btn-success'},
         )
-    
+
     def validate_username(self, username):
         users_counter = User.query.filter_by(username=username.data).count()
         if users_counter:
             raise ValidationError('Данное имя пользователя уже занято!')
+
     def validate_email(self, email):
-            emails_counter = User.query.filter_by(email=email.data).count()
-            if emails_counter:
-                raise ValidationError('Данное почта уже занята!')
+        emails_counter = User.query.filter_by(email=email.data).count()
+        if emails_counter:
+            raise ValidationError('Данное почта уже занята!')

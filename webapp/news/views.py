@@ -1,10 +1,18 @@
-from flask import Blueprint, abort, flash, current_app, render_template, request, redirect
+from flask import (
+    Blueprint,
+    abort,
+    current_app,
+    flash,
+    redirect,
+    render_template,
+    request,
+)
 from flask_login import current_user
+
 from webapp.db import db
 from webapp.news.forms import CommentForm
 from webapp.news.models import Comment, News
 from webapp.weather import get_weather_by_city
-from webapp.news_ks import get_news_ks
 
 blueprint = Blueprint('news', __name__)
 

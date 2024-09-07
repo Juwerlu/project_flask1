@@ -1,8 +1,9 @@
-from flask import Blueprint, flash, redirect, url_for, render_template, request
-from webapp.user.models import User
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask_login import current_user, login_user, logout_user
+
 from webapp.db import db
-from flask_login import login_user, current_user, logout_user
 from webapp.user.forms import LoginForm, RegForm
+from webapp.user.models import User
 
 blueprint = Blueprint('user', __name__, url_prefix='/user')
 

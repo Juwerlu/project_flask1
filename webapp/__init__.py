@@ -1,8 +1,9 @@
 from flask import Flask
-from webapp.db import db
 from flask_login import LoginManager
 from flask_migrate import Migrate
+
 from webapp.admin.views import blueprint as admin_blueprint
+from webapp.db import db
 from webapp.news.views import blueprint as news_blueprint
 from webapp.user.models import User
 from webapp.user.views import blueprint as user_blueprint
@@ -30,5 +31,3 @@ def create_app():
     app.register_blueprint(admin_blueprint)
 
     return app
-
-# export FLASK_APP=webapp && export FLASK_ENV=development && export FLASK_DEBUG=1 && flask run
