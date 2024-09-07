@@ -10,6 +10,7 @@ flask_app = create_app()
 
 @celery_app.task
 def parse_news():
+    """Функция для сбора новостей по расписанию."""
     with flask_app.app_context():
         print('Собираю новости...')
         get_news_ks()
@@ -17,4 +18,5 @@ def parse_news():
 
 @celery_app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
+    """Функция задающая расписание сбора новостей."""
     sender.add_periodic_task(crontab(minute='*/1'), parse_news.s())

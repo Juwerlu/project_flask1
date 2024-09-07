@@ -6,6 +6,7 @@ from webapp.db import db
 
 
 class News(db.Model):
+    """Модель для новостей."""
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     url = db.Column(db.String, nullable=False, unique=True)
@@ -17,6 +18,7 @@ class News(db.Model):
 
 
 class Comment(db.Model):
+    """Модель для комментариев."""
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text, nullable=False)
     created = db.Column(db.DateTime, default=datetime.now)

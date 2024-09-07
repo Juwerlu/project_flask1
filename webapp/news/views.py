@@ -19,6 +19,7 @@ blueprint = Blueprint('news', __name__)
 
 @blueprint.route('/')
 def index():
+    """Функция для главной страницы."""
     title = 'Новости'
     weather = get_weather_by_city(current_app.config['WEATHER_DEFAULT_CITY'])
     all_news = News.query.order_by(News.date.desc()).all()
@@ -32,6 +33,7 @@ def index():
 
 @blueprint.route('/news/<int:news_id>')
 def single_news(news_id):
+    """Функция для страницы отдельной новости."""
     my_news = News.query.filter(News.id == news_id).first()
     if not my_news:
         abort(404)
@@ -46,6 +48,7 @@ def single_news(news_id):
 
 @blueprint.route('/news/add-comment', methods=['post'])
 def add_comment():
+    """Функиця для добавления комментария."""
     form = CommentForm()
     if form.validate_on_submit():
         if News.query.get(form.news_id.data):
@@ -66,6 +69,7 @@ def add_comment():
 
 @blueprint.route('/news/del/<int:id>')
 def delete_comment(id):
+    """Функция для удаления комментария."""
     comment = Comment.query.get(id)
     db.session.delete(comment)
     db.session.commit()

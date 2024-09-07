@@ -7,6 +7,7 @@ from webapp.news.models import News, db
 
 
 def get_html(url):
+    """Функция для парсинга."""
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -17,6 +18,7 @@ def get_html(url):
 
 
 def get_news_ks():
+    """Функция для парсинга."""
     html = get_html('https://fksr.org/index.php?page=news&tg=2')
     if html:
         soup = BeautifulSoup(html, 'html.parser')
@@ -42,6 +44,7 @@ def get_news_ks():
 
 
 def save_news(title, url, date, text):
+    """Функция сохранения новости в базе данных."""
     check_news = News.query.filter(News.url == url).count()
     if not check_news:
         new_news = News(

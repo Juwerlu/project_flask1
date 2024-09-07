@@ -10,6 +10,7 @@ blueprint = Blueprint('user', __name__, url_prefix='/user')
 
 @blueprint.route('/login')
 def login():
+    """Функция страницы авторизации."""
     if current_user.is_authenticated:
         if request.values.get('next'):
             return redirect(request.values.get('next'))
@@ -25,6 +26,7 @@ def login():
 
 @blueprint.route('/login-process', methods=['POST'])
 def login_process():
+    """Функиця процесса авторизации."""
     form = LoginForm()
     user = User.query.filter_by(username=form.username.data).first()
     if user and user.check_password(form.password.data):
@@ -39,12 +41,14 @@ def login_process():
 
 @blueprint.route('/logout')
 def logout():
+    """Функция выхода из профиля."""
     logout_user()
     return redirect(url_for('news.index'))
 
 
 @blueprint.route('/reg')
 def reg():
+    """Функиця страницы регистрации."""
     if current_user.is_authenticated:
         return redirect(url_for('news.index'))
     title = 'Регистрация'
@@ -58,6 +62,7 @@ def reg():
 
 @blueprint.route('/reg-process', methods=['POST'])
 def reg_process():
+    """Функция процесса регистрации."""
     form = RegForm()
     if form.validate_on_submit():
         new_user = User(

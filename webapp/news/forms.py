@@ -6,6 +6,7 @@ from webapp.news.models import News
 
 
 class CommentForm(FlaskForm):
+    """Форма для комментариев."""
     news_id = HiddenField('ID новости', validators=[DataRequired()])
     comment = StringField(
         'Оставьте комментарий:',
@@ -18,5 +19,9 @@ class CommentForm(FlaskForm):
     )
 
     def validate_news_id(self, news_id):
+        """
+        Валидатор для проверки попытки оставить комментарий
+        к несуществующей новости.
+        """
         if not News.query.get(news_id.data):
-            raise ValidationError('Новость была удалена')
+            raise ValidationError('Новость была удалена!')

@@ -3,6 +3,7 @@ from flask import current_app
 
 
 def get_weather_by_city(city):
+    """Функция для запроса погоды через API."""
     url = 'http://api.worldweatheronline.com/premium/v1/weather.ashx'
     params = {
         'key': current_app.config['WEATHER_API_KEY'],

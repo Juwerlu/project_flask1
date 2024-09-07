@@ -5,6 +5,7 @@ from webapp.db import db
 
 
 class User(db.Model, UserMixin):
+    """Модель для пользователя."""
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(32), nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
@@ -12,9 +13,11 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String)
 
     def check_password(self, password):
+        """Функция проверяющая пароль."""
         return check_password_hash(self.password, password)
 
     def set_password(self, password):
+        """Функция хеширования пароля."""
         self.password = generate_password_hash(password)
 
     def __repr__(self):
