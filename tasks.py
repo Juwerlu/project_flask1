@@ -4,7 +4,7 @@ from celery.schedules import crontab
 from webapp import create_app
 from webapp.news_ks import get_news_ks
 
-celery_app = Celery('tasks', broker='redis://localhost:6380')
+celery_app = Celery('tasks', broker='redis://localhost:6379')
 flask_app = create_app()
 
 
