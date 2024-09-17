@@ -2,5 +2,8 @@
 __pycache__/
 data.db
 env/
+venv/
 "\320\220\321\200\321\205\320\270\320\262.zip"
 webapp/config.py
+.idea
+webapp.db
