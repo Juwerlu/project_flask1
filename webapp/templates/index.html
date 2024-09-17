@@ -6,14 +6,14 @@
         {% include 'messages.html' %}
         <form>
             <div>
+                <label>Поиск:<input type="text" name="search"/></label>
+                <input type="submit" value="Погнали!"/>
+            </div>
+            <div>
                 <label>Искать в:</label>
                     <label>заголовках<input type="checkbox" value="" name="t" {% if t %}checked{% endif %}/></label>
                     <label>тексте<input type="checkbox" value="" name="x" {% if x %}checked{% endif %}/></label>
                     <label>ссылках<input type="checkbox" value="" name="n" {% if n %}checked{% endif %}/></label>
-            </div>
-            <div>
-                <label>Поиск:<input type="text" name="search"/></label>
-                <input type="submit" value="Погнали!"/>
             </div>
         </form>
         {% for news in all_news %}
