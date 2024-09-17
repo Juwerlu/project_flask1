@@ -47,6 +47,7 @@ def index():
         all_news = all_news.order_by(News.date.desc()).all()
     return render_template(
         'index.html',
+        search=search,
         weather=weather,
         all_news=all_news,
         title=title,
