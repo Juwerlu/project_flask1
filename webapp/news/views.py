@@ -1,3 +1,7 @@
+from functools import reduce
+from itertools import chain
+from operator import add
+
 from flask import (
     Blueprint,
     abort,
@@ -8,6 +12,7 @@ from flask import (
     request,
 )
 from flask_login import current_user
+from sqlalchemy import Integer, cast, or_
 
 from webapp.db import db
 from webapp.news.forms import CommentForm
@@ -20,15 +25,33 @@ blueprint = Blueprint('news', __name__)
 @blueprint.route('/')
 def index():
     """Функция для главной страницы."""
+    FIELD_MAPPING = {
+        't': News.title,
+        'x': News.text,
+        'n': News.url,
+    }
     title = 'Новости'
     weather = get_weather_by_city(current_app.config['WEATHER_DEFAULT_CITY'])
-    all_news = News.query.order_by(News.date.desc()).all()
+    all_news = News.query
+    search = request.args.get('search')
+    field_keys = ''.join([k for k, v in FIELD_MAPPING.items() if k in request.args]) or 't'
+    if search:
+        fields = [FIELD_MAPPING[k] for k in field_keys]
+        words = search.split()
+        tokens = chain(*[[
+            cast(field.icontains(word), Integer) for word in words
+        ] for field in fields])
+        expression = reduce(add, tokens)
+        all_news = all_news.filter(expression > 0).order_by(expression.desc()).all()
+    else:
+        all_news = all_news.order_by(News.date.desc()).all()
     return render_template(
         'index.html',
         weather=weather,
         all_news=all_news,
-        title=title
-        )
+        title=title,
+        **{k: k if k in field_keys else '' for k in FIELD_MAPPING},
+    )
 
 
 @blueprint.route('/news/<int:news_id>')
