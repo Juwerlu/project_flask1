@@ -4,6 +4,18 @@
     <div class="col-3"></div>
     <div class='col-6'>
         {% include 'messages.html' %}
+        <form>
+            <div>
+                <label>Поиск:<input type="text" name="search", value="{{ search }}"/></label>
+                <input type="submit" value="Погнали!"/>
+            </div>
+            <div>
+                <label>Искать в:</label>
+                    <label>заголовках<input type="checkbox" value="" name="t" {% if t %}checked{% endif %}/></label>
+                    <label>тексте<input type="checkbox" value="" name="x" {% if x %}checked{% endif %}/></label>
+                    <label>ссылках<input type="checkbox" value="" name="n" {% if n %}checked{% endif %}/></label>
+            </div>
+        </form>
         {% for news in all_news %}
             <p><a href="{{ url_for('news.single_news', news_id=news.id) }}" style="color:black"><h5> {{ news.title }} </a></h5>
                 <small>{{ news.date.strftime('%d %B %Y, %A') }} | Комментарии: {{ news.comments_count() }}</small>
